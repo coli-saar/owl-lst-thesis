@@ -75,4 +75,12 @@
 
 === Previous Work 3
 
-#lorem(50)
+#lorem(500)
+
+#lorem(500)
+
+#lorem(500)
+
+#figure(caption: [An example figure.])[
+  #lorem(30)
+]
