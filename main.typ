@@ -52,12 +52,15 @@
 )
 
 
-= Introduction
+= Introduction <sec:introduction>
 
 #lorem(50)
 
 
 = Background
+
+As we discussed in @sec:introduction ...
+and as we will see in @fig:example ...
 
 #lorem(50)
 
@@ -83,17 +86,13 @@
 
 #figure(caption: [An example figure.])[
   #lorem(30)
-]
-
-// @GareyJohnsonBook
-
-// @bender-koller-2020-climbing
-
-// @kuhlmann-etal-2015-lexicalization
-
-// @GareyJohnsonBook
+] <fig:example>
 
 @yao2023predictinggeneralizationperformancecorrectness
+
+
+
+
 
 // #link-bib-urls()[
 //   #bibliography("custom.bib", style: "./apa-blinky.csl")

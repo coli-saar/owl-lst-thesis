@@ -70,7 +70,6 @@
       pagebreak(weak: true, to: "odd")
       state("content.switch").update(true)
 
-      // pagebreak(to: "odd", weak: true)
       v(2cm)
       set text(font: ("Open Sans", "Libertinus Serif"), weight: "bold", size: 24pt)
 
@@ -105,6 +104,12 @@
     let h1 = counter(heading).get().first()
     numbering("1.1", h1, n)
   })
+
+  // styling links
+  #let darkblue = rgb("000099")
+  #show link: set text(fill: darkblue)
+  #show cite: set text(fill: darkblue)
+  #show ref: set text(fill: darkblue)
 
   // show page number only if page is not blank
   // This uses some state magic from here: https://github.com/typst/typst/discussions/3122
@@ -169,6 +174,7 @@
   #set page(footer: page-footer, header: page-header)
 
 
+  /////////////////////////////////////////////////////////////////////////////
 
   // title page
   #title-page(thesis-type, title, author, matriculation-number, supervisors, date)
