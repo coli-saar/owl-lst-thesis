@@ -1,5 +1,5 @@
 #import "lst.typ": *
-
+#import "@preview/blinky:0.2.0": link-bib-urls
 
 
 #show: doc => lst(
@@ -83,4 +83,10 @@
 
 #figure(caption: [An example figure.])[
   #lorem(30)
+]
+
+@bender-koller-2020-climbing
+
+#link-bib-urls()[
+  #bibliography("custom.bib", style: "./apa-blinky.csl")
 ]
