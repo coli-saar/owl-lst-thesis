@@ -8,6 +8,7 @@
   matriculation-number: [12345],
   supervisors: ([Prof. Dr. Alexander Koller], [Prof. Dr. Vera Demberg]),
   date: [31.12.2024],
+
   abstract: [
     This thesis explores the effects of long-term syntactic alignment in Large Language Models
     (LLMs). An approach by Reitter (2008) was adapted to analyze alignment effects between
@@ -26,6 +27,7 @@
     vector representations of tokens in their prompts, but also by the linear order in which those
     tokens appear.
   ],
+
   acknowledgments: [
     First and foremost, I want to thank my incredible supervisors, Prof. Dr. Koller and Prof. Dr.
     Demberg, who guided me throughout an extended period and provided support no matter
@@ -54,3 +56,23 @@
 
 #lorem(50)
 
+
+= Background
+
+#lorem(50)
+
+== Related Work
+
+=== Previous Work 1
+
+#lorem(50)
+
+=== Previous Work 2
+
+#lorem(50)
+
+
+
+=== Previous Work 3
+
+#lorem(50)
