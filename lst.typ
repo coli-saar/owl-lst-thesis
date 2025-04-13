@@ -43,7 +43,16 @@
   #align(center)[Date of Submission\ #date]
 ]
 
-#let lst(thesis-type: "Bachelor Thesis", title: none, author: none, matriculation-number: none, supervisors: none, date: none, city: "Saarbrücken", abstract: none, acknowledgments: none, content) = [
+#let lst(thesis-type: "Bachelor Thesis", 
+          title: none, 
+          author: none, 
+          matriculation-number: none, 
+          supervisors: none, 
+          date: none, 
+          city: "Saarbrücken", 
+          abstract: none, 
+          acknowledgments: none, 
+          content) = [
   #set page(
       paper: "a4", margin: ( bottom: 4cm, top: 4cm, left: 2.5cm, right: 2.5cm),
       numbering: none,
@@ -89,13 +98,6 @@
       it
       v(1em, weak: true)
     }
-  }
-
-
-  // styling TOC
-  #show outline.entry.where(level: 1): it => {
-    v(12pt, weak: true)
-    it
   }
 
   // styling figures
@@ -171,12 +173,9 @@
   // title page
   #title-page(thesis-type, title, author, matriculation-number, supervisors, date)
   
-  
-
+  // declaration page
   #set page(numbering: "i")
   #counter(page).update(0)
-
-  // declaration page
   #heading(level: 100)[Declaration]
 
   I hereby confirm that the thesis presented here is my own work, with all assistance
@@ -204,12 +203,16 @@
   ]
 
   // table of contents
+  #show outline.entry.where(level: 1): it => {
+    v(12pt, weak: true)
+    it
+  }
+
   #outline(depth: 99)
 
-  // TODO: suppress page number 0
+  // main matter
   #set page(numbering: "1")
   #counter(page).update(0)
-
   #set heading(numbering: "1.1")
 
   #content
