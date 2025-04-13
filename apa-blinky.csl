@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <style xmlns="http://purl.org/net/xbiblio/csl" class="in-text" version="1.0" demote-non-dropping-particle="never" page-range-format="expanded">
   <info>
-    <title>American Psychological Association 7th edition</title>
+    <title>American Psychological Association 7th edition (modified for Blinky 0.2.0)</title>
     <title-short>APA</title-short>
     <id>http://www.zotero.org/styles/apa</id>
     <link href="http://www.zotero.org/styles/apa" rel="self"/>
@@ -10,6 +10,10 @@
     <author>
       <name>Brenton M. Wiernik</name>
       <email>zotero@wiernik.org</email>
+    </author>
+    <author>
+      <name>Alexander Koller</name>
+      <email>akoller@gmail.com</email>
     </author>
     <category citation-format="author-date"/>
     <category field="psychology"/>
@@ -572,6 +576,8 @@
       </else>
     </choose>
   </macro>
+
+  <!-- Added for Blinky version: macro that prints title with DOI/URL if available -->
   <macro name="title-with-url">
     <choose>
         <if variable="DOI">
@@ -600,7 +606,7 @@
             </group>
         </if>
         <else-if variable="URL">
-            <group delimiter=" " prefix="<<<" suffix=">>>">
+            <group delimiter=" " prefix="<_<" suffix=">_>">
                 <text variable="URL" suffix="|||" />
                 <text variable="title" />
             </group>
@@ -1643,10 +1649,18 @@
                 <names variable="container-author"/>
               </substitute>
             </names>
-            <group delimiter=": " font-style="italic">
-              <text variable="container-title"/>
-              <text macro="volume-title"/>
-            </group>
+            <choose>
+                <!-- Fixed for Blinky version: print booktitle only once for paper-conference -->
+                <if type="paper-conference">
+                    <text variable="container-title" font-style="italic"/>
+                </if>
+                <else>
+                    <group delimiter=": " font-style="italic">
+                        <text variable="container-title"/>
+                        <text macro="volume-title"/>
+                    </group>
+                </else>
+            </choose>
           </group>
           <text macro="parenthetical-container"/>
           <text macro="bracketed-container"/>

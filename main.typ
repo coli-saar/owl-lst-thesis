@@ -85,8 +85,20 @@
   #lorem(30)
 ]
 
-@bender-koller-2020-climbing
+// @GareyJohnsonBook
 
-#link-bib-urls()[
-  #bibliography("custom.bib", style: "./apa-blinky.csl")
-]
+// @bender-koller-2020-climbing
+
+// @kuhlmann-etal-2015-lexicalization
+
+// @GareyJohnsonBook
+
+@yao2023predictinggeneralizationperformancecorrectness
+
+// #link-bib-urls()[
+//   #bibliography("custom.bib", style: "./apa-blinky.csl")
+// ]
+// 
+
+
+#bibliography("custom.bib", style: "./apa.csl")
