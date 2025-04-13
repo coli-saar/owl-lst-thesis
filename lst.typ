@@ -214,7 +214,7 @@
     it
   }
 
-  #outline(depth: 99)
+  #outline(depth: 2) // show sections, but not subsections
 
   // main matter
   #set page(numbering: "1")
