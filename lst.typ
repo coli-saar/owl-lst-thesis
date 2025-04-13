@@ -57,7 +57,11 @@
   // level 100 = headings in the frontmatter
   #show heading: it => {
     if it.level == 1 or it.level == 100 {
-      pagebreak(to: "odd", weak: true)
+      state("content.switch").update(false)
+      pagebreak(weak: true, to: "odd")
+      state("content.switch").update(true)
+
+      // pagebreak(to: "odd", weak: true)
       v(2cm)
       set text(font: ("Open Sans", "Libertinus Serif"), weight: "bold", size: 24pt)
 
@@ -87,6 +91,7 @@
     }
   }
 
+
   // styling TOC
   #show outline.entry.where(level: 1): it => {
     v(12pt, weak: true)
@@ -99,109 +104,77 @@
     numbering("1.1", h1, n)
   })
 
-  // header with chapter numbers and titles
-  #let fill-line(left-text, right-text) = [#left-text #h(1fr) #right-text]
-  #set page(
-      // Set page header
-      header-ascent: 30%,
-      header: context {
-        // Get current page number
-        let page-number = here().page()
+  // show page number only if page is not blank
+  // This uses some state magic from here: https://github.com/typst/typst/discussions/3122
+  #let page-footer = context {
+    let has-content = state("content.pages", (0,)).get().contains(here().page())
 
-        // If the current page is the start of a chapter, don't show a header
-        let chapters = heading.where(level: 1)
-        if query(chapters).any(it => it.location().page() == page-number) {
-          return []
-        }
+    if has-content {
+      align(center, counter(page).display())
+    } else {
+      [  ] // empty page
+    }
+  }
 
-        // Find the chapter of the section we are currently in
-        let chapters-before = query(chapters.before(here()))
-        if chapters-before.len() > 0 {
-          let current-chapter = chapters-before.last()
+  // get content of the form "Chapter 3 -- Experiments"
+  #let header-for-chapter() = context {
+    let page-number = here().page()
+    let chapters = heading.where(level: 1)
+    if query(chapters).any(it => it.location().page() == page-number) {
+      return []
+    }
 
+    // Find the chapter of the section we are currently in
+    let chapters-before = query(chapters.before(here()))
+    if chapters-before.len() > 0 {
+      let current-chapter = chapters-before.last()
+      
+      // no header in un-numbered chapters
+      if current-chapter.numbering == none {
+        return []
+      }
 
-          // If a new subsecion starts on this page, select that subsection.
-          // Otherwise, select the last subsection
-          let current-subsection = {
-            let subsections = heading.where(level: 2)
-            let subsections-after = query(subsections.after(here()))
+      let chapter-title = current-chapter.body
+      let chapter-number = str(counter(heading.where(level: 1)).get().first())
 
-            if subsections-after.len() > 0 {
-              let next-subsection = subsections-after.first()
+      [Chapter #chapter-number  -- #chapter-title]
+    }
+  }
 
-              if next-subsection.location().page() == page-number {
-                (next-subsection)
-              } else {
-                let subsections-before = query(subsections.before(here()))
+  // set page header (and do more magic for the blank pages)
+  #let page-header = context {
+    let page-here = here().page()
+    // "start of chapter" is level 1 (real chapter) or 100 (section of the frontmatter)
+    let is-start-chapter = query(heading.where(level: 1) .or(heading.where(level: 100))   ).any(it => it.location().page() == page-here)
+    
+    if not state("content.switch", false).get() and not is-start-chapter {
+      [  ] // empty page
+      return
+    }
 
-                if subsections-before.len() > 0 {
-                  (subsections-before.last())
-                } else {
-                  // No subsections in this chapter
-                  (none)
-                }
-              }
-            }
-          }
+    // print header on pages that are not chapter starts
+    if not is-start-chapter {
+      align(if calc.odd(page-here) { right } else { left },
+        text(weight: "thin", font: ("Open Sans"), size: 10pt, fill: gray)[
+          #upper(header-for-chapter())
+        ])
+    }
 
-          let colored-slash = text(fill: gray, "--")
-          let spacing = h(3pt)
+    // update the list of pages on which the footer displays page numbers
+    state("content.pages").update(it => return it + (page-here,))
+  }
 
-          // Content to display subsection count and heading
-          let subsection-text = if current-subsection != none {
-            let subsection-numbering = current-subsection.numbering
-            let location = current-subsection.location()
-            let subsection-count = numbering(subsection-numbering,..counter(heading).at(location))
-
-            [#subsection-count #spacing #colored-slash #spacing #current-subsection.body]
-          } else {
-            // No subsections in chapter, display nothing
-            []
-          }
-
-          // Content to display chapter count and heading
-          let chapter-text = {
-            let chapter-title = current-chapter.body
-            let chapter-number = str(counter(heading.where(level: 1)).get().first())
-
-            [CHAPTER #chapter-number #spacing #colored-slash #spacing #chapter-title]
-          }
-
-          if current-chapter.numbering != none {
-            // Show current chapter on odd pages, current subsection on even
-            let (left-text, right-text) = if calc.odd(page-number) {
-              (counter(page).display(), chapter-text)
-            } else {
-              (
-                subsection-text,
-                counter(page).display(),
-              )
-            }
-            let (left-text, right-text) = if calc.odd(counter(page).get().first()) { ([], chapter-text) } else { (chapter-text, []) }
-            //  (chapter-text, counter(page).display())
-            text(
-              weight: "thin",
-              font: ("Open Sans"),
-              size: 8pt,
-              fill: gray,
-              fill-line(upper(left-text), upper(right-text)),
-              // [hmm]
-            )
-          }
-        }
-      },
-    )
-
+  #set page(footer: page-footer, header: page-header)
 
 
 
   // title page
   #title-page(thesis-type, title, author, matriculation-number, supervisors, date)
   
+  
 
   #set page(numbering: "i")
-  #counter(page).update(1)
-  // TODO: suppress page numbers on blank pages, cf. https://github.com/typst/typst/discussions/3122
+  #counter(page).update(0)
 
   // declaration page
   #heading(level: 100)[Declaration]
