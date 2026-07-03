@@ -2,59 +2,82 @@
 
 // TODO: select DE/EN through document language
 
-#let title-page(thesis-type, title, author, matriculation-number, supervisors, date) = [
-  #align(center)[#image("uds-logo.svg", width: 4cm)]
-  #align(center)[
-    #text(size: 24pt)[#smallcaps[Saarland University]]
-  ]
-  #align(center)[
-    #move(dy: -1em)[#text(size: 17pt, weight: 10)[#smallcaps[Department of Language Science and Technology]]]
-  ]
+#let uds-blue = rgb(0, 72, 119)
 
-  #v(2em)
-  #line(length: 100%, stroke: 1.5pt)
-  #align(center)[
-    #text(size: 15pt)[#smallcaps()[#thesis-type]]
-    #v(-1em)
-    #set par(leading: 0.4em)
-    #text(size: 30pt, weight: "medium")[#title]
-  ]
-  #v(-1.5em)
-  #line(length: 100%, stroke: 1.5pt)
+#let advisors(supervisors) = {
+  for (j, sup) in supervisors.enumerate() {
+    let role = sup.at(0)
+    let names = sup.slice(1)
 
-  #v(3em)
-  #stack(dir: ltr,
-    box()[
-      #align(left)[
-        _Author:_\ #author\
-        Matriculation number: #matriculation-number
+    strong(role)
+    for (i, name) in names.enumerate() {
+      linebreak()
+      name
+    }
+
+    if j < supervisors.len() - 1 {
+      linebreak()
+      linebreak()
+    }
+  }
+}
+
+#let title-page(thesis-type, title, author, matriculation-number, supervisors, date) = {
+  set text(font: "Open Sans")
+
+  stack(dir: ltr,
+    box(
+      text(size: 12pt, fill: uds-blue)[
+        *#thesis-type*\
+        Department of Language Science and Technology\
+        Saarland University
       ]
-    ],
+    ),
     h(1fr),
-    box()[
-      #align(right)[
-        _Supervisors:_\
-        #supervisors.join(linebreak())
-      ]
-    ]
+    // pad(left: 0.25cm)[
+      stack(dir: ltr,
+        image("logos/lst-logo.pdf", width: 1.45cm),
+        h(0.5cm),
+        move(dy: -0.08cm, image("logos/uds-logo.svg", width: 1.6cm))
+      )
+    // ]
   )
 
-  #v(1fr)
-  #align(center)[Date of Submission\ #date]
-]
+  v(4.3cm)
 
-#let lst(thesis-type: "Bachelor Thesis", 
-          title: none, 
-          author: none, 
-          matriculation-number: none, 
-          supervisors: none, 
-          date: none, 
-          city: "Saarbrücken", 
-          abstract: none, 
-          acknowledgments: none, 
+  text(size: 18pt, author)
+  v(0em)
+  text(size: 24pt, weight: "bold", fill: uds-blue, title)
+
+  v(1fr)
+
+
+  advisors(supervisors)
+
+  place(bottom + right)[
+    *Matriculation Number*\
+    #matriculation-number\
+    \
+    *Submission Date*\
+    #date
+  ]
+}
+
+
+
+
+#let lst(thesis-type: "Bachelor Thesis",
+          title: none,
+          author: none,
+          matriculation-number: none,
+          supervisors: none,
+          date: none,
+          city: "Saarbrücken",
+          abstract: none,
+          acknowledgments: none,
           content) = [
   #set page(
-      paper: "a4", margin: ( bottom: 4cm, top: 4cm, left: 2.5cm, right: 2.5cm),
+      paper: "a4", margin: ( bottom: 3cm, top: 3cm, inside: 3.5cm, outside: 2.5cm), // left: 2.5cm, right: 2.5cm),
       numbering: none,
       number-align: center,
     )
@@ -84,7 +107,7 @@
           // Also reset equation numbering
           counter(math.equation).update(0)
         }
-      } else {        
+      } else {
         it.body
       }
       v(2em, weak: true)
@@ -135,7 +158,7 @@
     let chapters-before = query(chapters.before(here()))
     if chapters-before.len() > 0 {
       let current-chapter = chapters-before.last()
-      
+
       // no header in un-numbered chapters
       if current-chapter.numbering == none {
         return []
@@ -153,7 +176,7 @@
     let page-here = here().page()
     // "start of chapter" is level 1 (real chapter) or 100 (section of the frontmatter)
     let is-start-chapter = query(heading.where(level: 1) .or(heading.where(level: 100))   ).any(it => it.location().page() == page-here)
-    
+
     if not state("content.switch", false).get() and not is-start-chapter {
       [  ] // empty page
       return
@@ -178,7 +201,7 @@
 
   // title page
   #title-page(thesis-type, title, author, matriculation-number, supervisors, date)
-  
+
   // declaration page
   #set page(numbering: "i")
   #counter(page).update(0)
@@ -187,6 +210,7 @@
   I hereby confirm that the thesis presented here is my own work, with all assistance
   acknowledged. I assure that the electronic version is identical in content to the printed
   version of the thesis.
+  #v(2em)
 
   #city, #date
 

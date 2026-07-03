@@ -6,7 +6,10 @@
   title: [Analysing Syntactic Long-term Alignment in Large Language Models],
   author: [Florian Kandra],
   matriculation-number: [12345],
-  supervisors: ([Prof. Dr. Alexander Koller], [Prof. Dr. Vera Demberg]),
+  supervisors: (
+    ([Supervisors], [Prof. Dr. Alexander Koller], [Prof. Dr. Vera Demberg]),
+    ([Additional advisor], [Dr. Michael Sullivan])
+  ),
   date: [31.12.2024],
 
   abstract: [
@@ -21,7 +24,7 @@
     analysis further explores how the process of alignment evolves throughout a conversation,
     showing that LLMs consistently adjust their syntax, with the largest changes occurring early
     on.
-    
+
     These results indicate that LLMs are not only influenced by the semantics of instructions,
     but also by the syntax present in their context. LLM responses are shaped not only by the
     vector representations of tokens in their prompts, but also by the linear order in which those
@@ -97,7 +100,7 @@ and as we will see in @fig:example ...
 // #link-bib-urls()[
 //   #bibliography("custom.bib", style: "./apa-blinky.csl")
 // ]
-// 
+//
 
 
 #bibliography("custom.bib", style: "./apa.csl")
