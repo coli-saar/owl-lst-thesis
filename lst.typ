@@ -139,13 +139,22 @@
     let has-content = state("content.pages", (0,)).get().contains(here().page())
 
     if has-content {
-      align(center, counter(page).display())
+      let page-here = here().page()
+      align(
+        if calc.odd(page-here) { right } else { left },
+        text(font: "Open Sans", size: 9.5pt, fill: uds-blue, weight: "semibold", counter(page).display())
+      )
     } else {
       [  ] // empty page
     }
   }
 
-  // get content of the form "Chapter 3 -- Experiments"
+  #let heading-number-at(it) = {
+    let nums = counter(heading).at(it.location())
+    numbering("1.1", ..nums)
+  }
+
+  // get content of the form "Chapter 3 / Experiments"
   #let header-for-chapter() = context {
     let page-number = here().page()
     let chapters = heading.where(level: 1)
@@ -166,7 +175,33 @@
       let chapter-title = current-chapter.body
       let chapter-number = str(counter(heading.where(level: 1)).get().first())
 
-      [Chapter #chapter-number  -- #chapter-title]
+      text(fill: uds-blue, weight: "semibold")[Chapter #chapter-number]
+      h(0.35em)
+      text(fill: luma(95))[/]
+      h(0.35em)
+      text(fill: luma(95), chapter-title)
+    }
+  }
+
+  // get content of the form "2.3 / Previous Work"
+  #let header-for-section() = context {
+    let page-number = here().page()
+    let sections = heading.where(level: 2)
+    if query(sections).any(it => it.location().page() == page-number) {
+      return []
+    }
+
+    let sections-before = query(sections.before(here()))
+    if sections-before.len() > 0 {
+      let current-section = sections-before.last()
+      let section-title = current-section.body
+      text(fill: uds-blue, weight: "semibold")[#heading-number-at(current-section)]
+      h(0.35em)
+      text(fill: luma(95))[/]
+      h(0.35em)
+      text(fill: luma(95), section-title)
+    } else {
+      header-for-chapter()
     }
   }
 
@@ -183,9 +218,15 @@
 
     // print header on pages that are not chapter starts
     if not is-start-chapter {
+      let header-content = if calc.odd(page-here) {
+        header-for-section()
+      } else {
+        header-for-chapter()
+      }
+
       align(if calc.odd(page-here) { right } else { left },
-        text(weight: "thin", font: ("Open Sans"), size: 10pt, fill: gray)[
-          #upper(header-for-chapter())
+        text(font: "Open Sans", size: 9.5pt)[
+          #header-content
         ])
     }
 
