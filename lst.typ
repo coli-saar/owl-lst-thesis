@@ -3,6 +3,7 @@
 // TODO: select DE/EN through document language
 
 #let uds-blue = rgb(0, 72, 119)
+#let text-gray = luma(95)
 
 #let advisors(supervisors) = {
   for (j, sup) in supervisors.enumerate() {
@@ -93,12 +94,12 @@
       state("content.switch").update(true)
 
       v(2cm)
-      set text(font: ("Open Sans", "Libertinus Serif"), weight: "bold", size: 24pt)
+      set text(font: ("Open Sans", "Libertinus Serif"), weight: "bold", size: 24pt, fill: uds-blue)
 
       if it.level == 1 and it.numbering != none {
-        [Chapter #context(counter(heading).display())]
-        v(0em)
-        it.body
+        text(font: "Open Sans", size: 11pt, fill: text-gray)[Chapter #context(counter(heading).display())]
+        v(-0.6em)
+        text(fill: uds-blue, it.body)
 
         // Reset figure numbering on every chapter start
         for kind in (image, table, raw) {
@@ -112,7 +113,7 @@
       v(2em, weak: true)
     } else if it.level == 2 {
       v(1em)
-      text(size: 18pt, it)
+      text(font: "Open Sans", size: 18pt, weight: "bold", it)
       v(1.5em, weak: true)
     } else {
       v(0em)
@@ -126,12 +127,20 @@
     let h1 = counter(heading).get().first()
     numbering("1.1", h1, n)
   })
+  #show figure.caption: it => {
+    set text(font: "Open Sans", size: 9.5pt)
+    text(fill: uds-blue, weight: "semibold", it.supplement)
+    h(0.35em)
+    text(fill: uds-blue, weight: "semibold", it.counter.display())
+    text(fill: text-gray)[:]
+    h(0.35em)
+    text(fill: text-gray, it.body)
+  }
 
   // styling links
-  #let darkblue = rgb("000099")
-  #show link: set text(fill: darkblue)
-  #show cite: set text(fill: darkblue)
-  #show ref: set text(fill: darkblue)
+  #show link: set text(fill: uds-blue)
+  #show cite: set text(fill: uds-blue)
+  #show ref: set text(fill: uds-blue)
 
   // show page number only if page is not blank
   // This uses some state magic from here: https://github.com/typst/typst/discussions/3122
@@ -177,9 +186,9 @@
 
       text(fill: uds-blue, weight: "semibold")[Chapter #chapter-number]
       h(0.35em)
-      text(fill: luma(95))[/]
+      text(fill: text-gray)[/]
       h(0.35em)
-      text(fill: luma(95), chapter-title)
+      text(fill: text-gray, chapter-title)
     }
   }
 
@@ -197,9 +206,9 @@
       let section-title = current-section.body
       text(fill: uds-blue, weight: "semibold")[#heading-number-at(current-section)]
       h(0.35em)
-      text(fill: luma(95))[/]
+      text(fill: text-gray)[/]
       h(0.35em)
-      text(fill: luma(95), section-title)
+      text(fill: text-gray, section-title)
     } else {
       header-for-chapter()
     }
