@@ -34,13 +34,12 @@
       ]
     ),
     h(1fr),
-    // pad(left: 0.25cm)[
-      stack(dir: ltr,
-        image("logos/lst-logo.pdf", width: 1.45cm),
-        h(0.5cm),
-        move(dy: -0.08cm, image("logos/uds-logo.svg", width: 1.6cm))
-      )
-    // ]
+
+    stack(dir: ltr,
+      image("logos/lst-logo.pdf", width: 1.45cm),
+      h(0.5cm),
+      move(dy: -0.08cm, image("logos/uds-logo.svg", width: 1.6cm))
+    )
   )
 
   v(4.3cm)
@@ -84,7 +83,7 @@
 
   #set text(size: 12pt)
   #let leading-space = 0.7em
-  #set par(leading: leading-space, spacing: 1em)
+  #set par(leading: leading-space, spacing: 2 * leading-space)
 
   // level 100 = headings in the frontmatter
   #show heading: it => {
@@ -206,7 +205,7 @@
   #set page(numbering: "i")
   #counter(page).update(0)
   #heading(level: 100)[Declaration]
-
+  #v(-2em)
   I hereby confirm that the thesis presented here is my own work, with all assistance
   acknowledged. I assure that the electronic version is identical in content to the printed
   version of the thesis.
@@ -223,12 +222,14 @@
   #set par(justify: true)
   #if abstract != none [
     #heading(level: 100)[Abstract]
+    #v(-2em)
     #abstract
   ]
 
   // acknowledgments
   #if acknowledgments != none [
     #heading(level: 100)[Acknowledgments]
+    #v(-2em)
     #acknowledgments
   ]
 
