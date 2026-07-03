@@ -1,9 +1,19 @@
+#import "@preview/pergamon:0.8.0": *
 
 
 // TODO: select DE/EN through document language
 
 #let uds-blue = rgb(0, 72, 119)
 #let text-gray = luma(95)
+
+#let print-lst-bibliography() = {
+
+  heading(level: 100)[Bibliography]
+  v(-2em)
+  print-bibliography(
+    title: none
+  )
+}
 
 #let advisors(supervisors) = {
   for (j, sup) in supervisors.enumerate() {
@@ -139,7 +149,7 @@
 
   // styling links
   #show link: set text(fill: uds-blue)
-  #show cite: set text(fill: uds-blue)
+  // #show cite: set text(fill: uds-blue)
   #show ref: set text(fill: uds-blue)
 
   // show page number only if page is not blank
@@ -296,5 +306,7 @@
   #counter(page).update(0)
   #set heading(numbering: "1.1")
 
-  #content
+  #refsection(style: authoryear-style(
+    reference: (print-date-after-authors: true)
+  ), content)
 ]

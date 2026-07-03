@@ -1,5 +1,6 @@
 #import "lst.typ": *
-#import "@preview/blinky:0.2.0": link-bib-urls
+// #import "@preview/blinky:0.2.0": link-bib-urls
+#import "@preview/pergamon:0.8.0": *
 
 
 #show: doc => lst(
@@ -55,6 +56,9 @@
 )
 
 
+#add-bib-resource(read("custom.bib"))
+
+
 = Introduction <sec:introduction>
 
 #lorem(50)
@@ -91,16 +95,8 @@ and as we will see in @fig:example ...
   #lorem(30)
 ] <fig:example>
 
-@yao2023predictinggeneralizationperformancecorrectness
+#cite("yao2023predictinggeneralizationperformancecorrectness")
 
 
 
-
-
-// #link-bib-urls()[
-//   #bibliography("custom.bib", style: "./apa-blinky.csl")
-// ]
-//
-
-
-#bibliography("custom.bib", style: "./apa.csl")
+#print-lst-bibliography()
