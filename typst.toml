@@ -1,0 +1,32 @@
+[package]
+name = "saar-lst-thesis"
+version = "0.1.0"
+entrypoint = "lst.typ"
+authors = ["Alexander Koller <@akoller>"]
+license = "MIT-0"
+description = "Thesis at Saarland University's LST department."
+repository = "https://github.com/coli-saar/typst-lst-template"
+keywords = [
+  "Saarland University",
+  "Language Science and Technology",
+  "LST",
+  "thesis",
+]
+categories = ["thesis"]
+disciplines = ["computer-science", "linguistics"]
+compiler = "0.15.0"
+exclude = [
+  "/tmp/",
+  "/apa.csl",
+  "/apa-blinky.csl",
+  "/custom.bib",
+  "/main.typ",
+  "/main.pdf",
+  "/logos/lstlogo.pdf",
+  ".DS_Store",
+]
+
+[template]
+path = "template"
+entrypoint = "main.typ"
+thumbnail = "thumbnail.png"

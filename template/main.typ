@@ -1,4 +1,4 @@
-#import "lst.typ": *
+#import "@preview/saar-lst-thesis:0.1.0": *
 #import "@preview/pergamon:0.8.0": *
 
 
@@ -180,6 +180,13 @@ use "the assistant checked the file", "the script recorded the result", and "the
 the summary". The final probe asks for an explanation of the procedure without mentioning
 voice.
 
+#figure(caption: [Schematic contrast between matched prompt variants.])[
+  #sample-figure(
+    [Variant A: active frames | Variant B: passive frames],
+    [Both variants describe the same sequence of events. Only syntactic realization is changed.]
+  )
+] <fig:variants>
+
 The prompts were also balanced for length. Exact equality is impossible because constructions
 have different word counts, but the average difference between paired contexts was kept below
 five percent. Pairs with larger differences were revised or removed.
@@ -207,13 +214,6 @@ The parser labels are not perfect proxies for linguistic categories. For this re
 construction family is treated as a measurable approximation. The interpretation of results is
 therefore conservative: a significant effect indicates a change in parser-detected structure, not
 necessarily a complete linguistic theory of the model's syntax.
-
-#figure(caption: [Schematic contrast between matched prompt variants.])[
-  #sample-figure(
-    [Variant A: active frames | Variant B: passive frames],
-    [Both variants describe the same sequence of events. Only syntactic realization is changed.]
-  )
-] <fig:variants>
 
 == Generation Protocol
 
@@ -275,20 +275,23 @@ counted when the parser marks a passive auxiliary or passive subject relation. A
 is counted when a clausal modifier is introduced by a relative marker or has the dependency
 shape expected for a relative clause.
 
-==== Passive voice
+==== Passive Voice
+
 Passive voice is the most reliable construction in the sample because the parser usually marks
 the relevant dependencies explicitly. The detector counts canonical passives such as "the
 summary was revised" and ignores adjectival participles unless there is an auxiliary or subject
 configuration suggesting an eventive reading.
 
-==== Ambiguous participles
+===== Ambiguous participles
+
 Ambiguous participles are handled cautiously. A phrase such as "the revised summary" is not
 counted as passive, because it functions as an attributive modifier. A phrase such as "the
 summary was revised by the assistant" is counted, because the auxiliary and optional by-phrase
-make the passive analysis clear. This level-4 heading is included to exercise paragraph-style
+make the passive analysis clear. This level-5 heading is included to exercise paragraph-style
 heading behavior in the template.
 
-==== Relative clauses
+==== Relative Clauses
+
 Relative clauses are harder to detect because generated text often omits explicit relative
 markers. The detector therefore distinguishes explicit relatives, such as "the file that failed",
 from reduced relatives, such as "the file stored on the server". Only explicit relatives are used
@@ -369,10 +372,21 @@ Relative clauses show a similar pattern. Contexts with repeated relative clauses
 rate of relative clauses in later responses. Qualitative inspection suggests that the model often
 uses relative clauses to maintain the explanatory style of the context.
 
-The estimates in @tab:effects are intentionally modest. The important point is not that the
-model becomes a mirror of the prompt. Rather, the distribution shifts. In an interactive
-setting, such shifts can accumulate across turns and contribute to the perceived style of the
-system.
+#figure(kind: table, caption: [Estimated alignment effects by construction family.])[
+  #table(
+    columns: (1.6fr, 1.2fr, 1.4fr, 1.4fr),
+    inset: 6pt,
+    table.header([Construction], [Effect], [95% CI], [Interpretation]),
+    [Passive voice], [+3.8 pp], [[+2.1, +5.4]], [Clear],
+    [Relative clauses], [+2.9 pp], [[+1.0, +4.6]], [Clear],
+    [Complement clauses], [+1.2 pp], [[-0.1, +2.5]], [Weak],
+    [PP sequences], [+0.6 pp], [[-1.4, +2.2]], [Unclear],
+  )
+] <tab:effects>
+
+The table is intentionally modest. The important point is not that the model becomes a mirror
+of the prompt. Rather, the distribution shifts. In an interactive setting, such shifts can
+accumulate across turns and contribute to the perceived style of the system.
 
 == Persistence Across Turns
 
@@ -391,18 +405,6 @@ that syntax competes with newer content and instructions.
     [The trend illustrates decreasing influence as additional material enters the context.]
   )
 ] <fig:decay>
-
-#figure(kind: table, caption: [Estimated alignment effects by construction family.])[
-  #table(
-    columns: (1.6fr, 1.2fr, 1.4fr, 1.4fr),
-    inset: 6pt,
-    table.header([Construction], [Effect], [95% CI], [Interpretation]),
-    [Passive voice], [+3.8 pp], [[+2.1, +5.4]], [Clear],
-    [Relative clauses], [+2.9 pp], [[+1.0, +4.6]], [Clear],
-    [Complement clauses], [+1.2 pp], [[-0.1, +2.5]], [Weak],
-    [PP sequences], [+0.6 pp], [[-1.4, +2.2]], [Unclear],
-  )
-] <tab:effects>
 
 == Conclusion
 

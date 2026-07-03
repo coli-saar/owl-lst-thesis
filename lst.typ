@@ -7,7 +7,6 @@
 #let text-gray = luma(95)
 
 #let print-lst-bibliography() = {
-
   heading(level: 100)[Bibliography]
   v(-2em)
   print-bibliography(
@@ -48,7 +47,7 @@
 
     stack(dir: ltr,
       image("logos/lst-logo.pdf", width: 1.45cm),
-      h(0.5cm),
+      h(0.6cm),
       move(dy: -0.08cm, image("logos/uds-logo.svg", width: 1.6cm))
     )
   )
@@ -96,6 +95,8 @@
   #let leading-space = 0.7em
   #set par(leading: leading-space, spacing: 2 * leading-space)
 
+
+
   // level 100 = headings in the frontmatter
   #show heading: it => {
     if it.level == 1 or it.level == 100 {
@@ -123,8 +124,12 @@
       v(2em, weak: true)
     } else if it.level == 2 {
       v(1em)
-      text(font: "Open Sans", size: 18pt, weight: "bold", it)
+      text(font: "Open Sans", size: 16pt, weight: "bold", it)
       v(1.5em, weak: true)
+    } else if it.level == 4 {
+      v(0.7em)
+      text(weight: "bold", it.body)
+      [. ]
     } else {
       v(0em)
       it
@@ -133,12 +138,19 @@
   }
 
   // styling figures
-  #set figure(placement: top, numbering: n => {
-    let h1 = counter(heading).get().first()
-    numbering("1.1", h1, n)
-  })
+  #set figure(
+    placement: top,
+    numbering: n => {
+      let h1 = counter(heading).get().first()
+      numbering("1.1", h1, n)
+    }
+  )
+
+  #show figure: set place(clearance: 2em)
+
   #show figure.caption: it => {
     set text(font: "Open Sans", size: 9.5pt)
+    v(0.5em)
     text(fill: uds-blue, weight: "semibold", it.supplement)
     h(0.35em)
     text(fill: uds-blue, weight: "semibold", it.counter.display())
@@ -206,13 +218,10 @@
   #let header-for-section() = context {
     let page-number = here().page()
     let sections = heading.where(level: 2)
-    if query(sections).any(it => it.location().page() == page-number) {
-      return []
-    }
+    let sections-on-page = query(sections).filter(it => it.location().page() == page-number)
 
-    let sections-before = query(sections.before(here()))
-    if sections-before.len() > 0 {
-      let current-section = sections-before.last()
+    if sections-on-page.len() > 0 {
+      let current-section = sections-on-page.first()
       let section-title = current-section.body
       text(fill: uds-blue, weight: "semibold")[#heading-number-at(current-section)]
       h(0.35em)
@@ -220,7 +229,18 @@
       h(0.35em)
       text(fill: text-gray, section-title)
     } else {
-      header-for-chapter()
+      let sections-before = query(sections.before(here()))
+      if sections-before.len() > 0 {
+        let current-section = sections-before.last()
+        let section-title = current-section.body
+        text(fill: uds-blue, weight: "semibold")[#heading-number-at(current-section)]
+        h(0.35em)
+        text(fill: text-gray)[/]
+        h(0.35em)
+        text(fill: text-gray, section-title)
+      } else {
+        header-for-chapter()
+      }
     }
   }
 
@@ -307,6 +327,17 @@
   #set heading(numbering: "1.1")
 
   #refsection(style: authoryear-style(
-    reference: (print-date-after-authors: true)
+    reference: (
+      name-format: "{given} {family}",
+      format-quotes: it => it,
+      print-date-after-authors: true,
+      suppress-fields: (
+        "*": ("month", "day",),
+        "inproceedings": ("editor", "publisher", "pages", "location")
+      ),
+      eval-scope: ("todo": x => text(fill: red, x)),
+      bibstring: ("in": "In"),
+      bibstring-style: "long",
+    )
   ), content)
 ]
