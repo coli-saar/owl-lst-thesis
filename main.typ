@@ -1,4 +1,4 @@
-#import "lst.typ": *
+#import "lib.typ": *
 #import "@preview/pergamon:0.8.0": *
 
 // #set text(lang: "de")

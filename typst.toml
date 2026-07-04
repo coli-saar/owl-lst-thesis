@@ -1,7 +1,7 @@
 [package]
 name = "saar-lst-thesis"
 version = "0.1.0"
-entrypoint = "lst.typ"
+entrypoint = "lib.typ"
 authors = ["Alexander Koller <@akoller>"]
 license = "MIT"
 description = "Thesis at Saarland University's LST department."
