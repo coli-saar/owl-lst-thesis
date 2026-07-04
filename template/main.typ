@@ -2,6 +2,11 @@
 #import "@preview/pergamon:0.8.0": *
 
 
+// Change to "de" for German template labels.
+#set text(lang: "en")
+
+// Fill in your thesis metadata here. The final `doc` argument tells the
+// template where to place the thesis body written below this block.
 #show: doc => lst(
   title: [Analysing Syntactic Long-term Alignment in Large Language Models],
   author: [Florian Kandra],
@@ -55,8 +60,12 @@
 )
 
 
+// Put your BibTeX entries in custom.bib and cite them with #cite("key").
 #add-bib-resource(read("custom.bib"))
 
+// This helper only creates placeholder figure boxes for the sample document.
+// Remove it in a real thesis and use #figure(...) with your actual images,
+// tables, or diagrams.
 #let sample-figure(title, body) = box(
   width: 100%,
   inset: 1.1em,

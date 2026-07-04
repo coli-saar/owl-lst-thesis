@@ -1,8 +1,9 @@
 #import "lst.typ": *
 #import "@preview/pergamon:0.8.0": *
 
+// #set text(lang: "de")
 
-#show: doc => lst(
+#show: lst.with(
   title: [Analysing Syntactic Long-term Alignment in Large Language Models],
   author: [Florian Kandra],
   matriculation-number: [12345],
@@ -49,9 +50,7 @@
 
     Lastly, a big hug to our cat Minka, who somehow managed to stay with us through at least
     half of my work -- offering purrs and cuddles when I needed them most!
-  ],
-
-  doc
+  ]
 )
 
 

@@ -1,19 +1,77 @@
 #import "@preview/pergamon:0.8.0": *
 
-
-// TODO: select DE/EN through document language
-
 #let uds-blue = rgb(0, 72, 119)
 #let text-gray = luma(95)
 
+// Built-in strings for the parts of the thesis that the template creates.
+// The selected language comes from `#set text(lang: "...")`; unsupported
+// languages fall back to English.
+#let lst-translations = (
+  en: (
+    bibliography: "Bibliography",
+    declaration: "Declaration",
+    declaration-text: [
+      I hereby confirm that the thesis presented here is my own work, with all assistance
+      acknowledged. I assure that the electronic version is identical in content to the printed
+      version of the thesis.
+    ],
+    contents: "Contents",
+    abstract: "Abstract",
+    acknowledgments: "Acknowledgments",
+    chapter: "Chapter",
+    matriculation-number: "Matriculation Number",
+    submission-date: "Submission Date",
+    department: "Department of Language Science and Technology",
+    university: "Saarland University",
+    thesis-type: "Bachelor Thesis",
+    bib-in: "In",
+  ),
+  de: (
+    bibliography: "Literaturverzeichnis",
+    declaration: "Erklärung",
+    declaration-text: [
+      Hiermit bestätige ich, dass die vorliegende Arbeit von mir selbstständig verfasst wurde
+      und alle verwendeten Hilfsmittel angegeben sind. Ich versichere, dass die elektronische
+      Version inhaltlich mit der gedruckten Version der Arbeit übereinstimmt.
+    ],
+    contents: "Inhaltsverzeichnis",
+    abstract: "Zusammenfassung",
+    acknowledgments: "Danksagung",
+    chapter: "Kapitel",
+    matriculation-number: "Matrikelnummer",
+    submission-date: "Abgabedatum",
+    department: "FR Sprachwissenschaft und Sprachtechnologie",
+    university: "Universität des Saarlandes",
+    thesis-type: "Bachelorarbeit",
+    bib-in: "In",
+  ),
+)
+
+#let lst-current-translations() = {
+  let lang = text.lang
+  if lst-translations.keys().contains(lang) {
+    lst-translations.at(lang)
+  } else {
+    lst-translations.en
+  }
+}
+
+#let lst-text(key) = context {
+  lst-current-translations().at(key)
+}
+
+// Public helper for the end of the thesis. It keeps the bibliography heading
+// consistent with the front matter and delegates the actual entries to Pergamon.
 #let print-lst-bibliography() = {
-  heading(level: 100)[Bibliography]
+  heading(level: 100)[#lst-text("bibliography")]
   v(-2em)
   print-bibliography(
     title: none
   )
 }
 
+// Render grouped supervisor/advisor entries. Each group is expected to have the
+// role label first and one or more names afterwards.
 #let advisors(supervisors) = {
   for (j, sup) in supervisors.enumerate() {
     let role = sup.at(0)
@@ -32,15 +90,24 @@
   }
 }
 
-#let title-page(thesis-type, title, author, matriculation-number, supervisors, date) = {
+// The title page is separated from `lst` so the main wrapper can focus on page
+// setup and document flow. Localized strings are passed in explicitly because
+// the title page is built inside a context block.
+#let title-page(strings, thesis-type, title, author, matriculation-number, supervisors, date) = {
   set text(font: "Open Sans")
+
+  let displayed-thesis-type = if thesis-type == none {
+    strings.thesis-type
+  } else {
+    thesis-type
+  }
 
   stack(dir: ltr,
     box(
       text(size: 12pt, fill: uds-blue)[
-        *#thesis-type*\
-        Department of Language Science and Technology\
-        Saarland University
+        *#displayed-thesis-type*\
+        #strings.department\
+        #strings.university
       ]
     ),
     h(1fr),
@@ -64,10 +131,10 @@
   advisors(supervisors)
 
   place(bottom + right)[
-    *Matriculation Number*\
+    *#strings.matriculation-number*\
     #matriculation-number\
     \
-    *Submission Date*\
+    *#strings.submission-date*\
     #date
   ]
 }
@@ -75,7 +142,10 @@
 
 
 
-#let lst(thesis-type: "Bachelor Thesis",
+// Main thesis wrapper. Use it through `#show: doc => lst(..., doc)` so the
+// student's document body becomes `content` after the template has inserted the
+// title page, declaration, optional front matter, and table of contents.
+#let lst(thesis-type: none,
           title: none,
           author: none,
           matriculation-number: none,
@@ -86,20 +156,25 @@
           acknowledgments: none,
           content) = [
   #set page(
-      paper: "a4", margin: ( bottom: 3cm, top: 3cm, inside: 3.5cm, outside: 2.5cm), // left: 2.5cm, right: 2.5cm),
+      paper: "a4", margin: ( bottom: 3cm, top: 3cm, inside: 3.5cm, outside: 2.5cm),
       numbering: none,
       number-align: center,
     )
 
   #set text(size: 12pt)
   #let leading-space = 0.7em
-  #set par(leading: leading-space, spacing: 2 * leading-space)
+  #let paragraph-space = 2 * leading-space
+  #set par(leading: leading-space, spacing: paragraph-space)
 
 
 
-  // level 100 = headings in the frontmatter
+  // Level 100 is reserved for generated front-matter headings. It lets the
+  // template reuse the chapter-opening layout without putting these pages into
+  // the normal chapter numbering.
   #show heading: it => {
     if it.level == 1 or it.level == 100 {
+      // The content switch marks inserted blank pages so headers and footers can
+      // stay empty on pages created only to force odd-page chapter starts.
       state("content.switch").update(false)
       pagebreak(weak: true, to: "odd")
       state("content.switch").update(true)
@@ -108,14 +183,13 @@
       set text(font: ("Open Sans", "Libertinus Serif"), weight: "bold", size: 24pt, fill: uds-blue)
 
       if it.level == 1 and it.numbering != none {
-        text(font: "Open Sans", size: 11pt, fill: text-gray)[Chapter #context(counter(heading).display())]
+        text(font: "Open Sans", size: 11pt, fill: text-gray)[#lst-text("chapter") #context(counter(heading).display())]
         v(-0.6em)
         text(fill: uds-blue, it.body)
 
-        // Reset figure numbering on every chapter start
+        // Figure-like counters are chapter-local, matching labels such as 2.1.
         for kind in (image, table, raw) {
           counter(figure.where(kind: kind)).update(0)
-          // Also reset equation numbering
           counter(math.equation).update(0)
         }
       } else {
@@ -123,11 +197,17 @@
       }
       v(2em, weak: true)
     } else if it.level == 2 {
-      v(1em)
+      // Sections
+      v(paragraph-space)
       text(font: "Open Sans", size: 16pt, weight: "bold", it)
       v(1.5em, weak: true)
+    } else if it.level == 3 {
+      // Subsections
+      v(0.3em)
+      text(font: "Open Sans", size: 13.5pt, weight: "bold", it)
+      v(1em, weak: true)
     } else if it.level == 4 {
-      v(0.7em)
+      // v(0.7em)
       text(weight: "bold", it.body)
       [. ]
     } else {
@@ -137,7 +217,7 @@
     }
   }
 
-  // styling figures
+  // Figure/table/equation numbering uses the current chapter number as prefix.
   #set figure(
     placement: top,
     numbering: n => {
@@ -159,13 +239,16 @@
     text(fill: text-gray, it.body)
   }
 
-  // styling links
+  // Links and references use the house blue so cross-references are visible but
+  // not visually louder than the surrounding thesis text.
   #show link: set text(fill: uds-blue)
   // #show cite: set text(fill: uds-blue)
   #show ref: set text(fill: uds-blue)
 
-  // show page number only if page is not blank
-  // This uses some state magic from here: https://github.com/typst/typst/discussions/3122
+  // Show page numbers only on pages that the header has marked as containing
+  // real content. This avoids numbering intentionally inserted blank pages.
+  // The state-based approach follows the pattern discussed in:
+  // https://github.com/typst/typst/discussions/3122
   #let page-footer = context {
     let has-content = state("content.pages", (0,)).get().contains(here().page())
 
@@ -185,7 +268,7 @@
     numbering("1.1", ..nums)
   }
 
-  // get content of the form "Chapter 3 / Experiments"
+  // Build even-page running heads of the form "Chapter 3 / Experiments".
   #let header-for-chapter() = context {
     let page-number = here().page()
     let chapters = heading.where(level: 1)
@@ -206,7 +289,7 @@
       let chapter-title = current-chapter.body
       let chapter-number = str(counter(heading.where(level: 1)).get().first())
 
-      text(fill: uds-blue, weight: "semibold")[Chapter #chapter-number]
+      text(fill: uds-blue, weight: "semibold")[#lst-text("chapter") #chapter-number]
       h(0.35em)
       text(fill: text-gray)[/]
       h(0.35em)
@@ -214,7 +297,8 @@
     }
   }
 
-  // get content of the form "2.3 / Previous Work"
+  // Build odd-page running heads of the form "2.3 / Previous Work". If the
+  // current chapter has no section yet, fall back to the chapter header.
   #let header-for-section() = context {
     let page-number = here().page()
     let sections = heading.where(level: 2)
@@ -244,10 +328,11 @@
     }
   }
 
-  // set page header (and do more magic for the blank pages)
+  // Page headers are also responsible for recording which pages are nonblank;
+  // the footer reads that state when deciding whether to print a page number.
   #let page-header = context {
     let page-here = here().page()
-    // "start of chapter" is level 1 (real chapter) or 100 (section of the frontmatter)
+    // Chapter starts include real chapters and generated front-matter pages.
     let is-start-chapter = query(heading.where(level: 1) .or(heading.where(level: 100))   ).any(it => it.location().page() == page-here)
 
     if not state("content.switch", false).get() and not is-start-chapter {
@@ -255,7 +340,7 @@
       return
     }
 
-    // print header on pages that are not chapter starts
+    // Suppress running heads on chapter-opening pages.
     if not is-start-chapter {
       let header-content = if calc.odd(page-here) {
         header-for-section()
@@ -276,68 +361,77 @@
   #set page(footer: page-footer, header: page-header)
 
 
-  /////////////////////////////////////////////////////////////////////////////
+  // Generated front matter. Page numbering starts in roman numerals after the
+  // unnumbered title page, then restarts in arabic numerals for the thesis body.
+  #context {
+    let strings = lst-current-translations()
 
-  // title page
-  #title-page(thesis-type, title, author, matriculation-number, supervisors, date)
+    // title page
+    title-page(strings, thesis-type, title, author, matriculation-number, supervisors, date)
 
-  // declaration page
-  #set page(numbering: "i")
-  #counter(page).update(0)
-  #heading(level: 100)[Declaration]
-  #v(-2em)
-  I hereby confirm that the thesis presented here is my own work, with all assistance
-  acknowledged. I assure that the electronic version is identical in content to the printed
-  version of the thesis.
-  #v(2em)
+    // declaration page
+    set page(numbering: "i")
+    counter(page).update(0)
+    heading(level: 100)[#strings.declaration]
+    v(-2em)
+    strings.declaration-text
+    v(2em)
 
-  #city, #date
+    city
+    [, ]
+    date
 
-  #v(5em)
-  #line(length: 50%)
-  #v(-0.5em)
-  (#author)
+    v(5em)
+    line(length: 50%)
+    v(-0.5em)
+    [(#author)]
+  }
 
-  // abstract
+  // Optional front-matter sections are omitted entirely when the corresponding
+  // argument is `none`.
   #set par(justify: true)
   #if abstract != none [
-    #heading(level: 100)[Abstract]
+    #heading(level: 100)[#lst-text("abstract")]
     #v(-2em)
     #abstract
   ]
 
   // acknowledgments
   #if acknowledgments != none [
-    #heading(level: 100)[Acknowledgments]
+    #heading(level: 100)[#lst-text("acknowledgments")]
     #v(-2em)
     #acknowledgments
   ]
 
-  // table of contents
+  // The table of contents is intentionally shallow: chapters and sections only.
   #show outline.entry.where(level: 1): it => {
     v(12pt, weak: true)
     it
   }
 
-  #outline(depth: 2) // show sections, but not subsections
+  #outline(title: lst-text("contents"), depth: 2) // show sections, but not subsections
 
-  // main matter
+  // Main matter starts the visible chapter/section numbering and wraps the body
+  // in Pergamon's author-year citation style.
   #set page(numbering: "1")
   #counter(page).update(0)
   #set heading(numbering: "1.1")
 
-  #refsection(style: authoryear-style(
-    reference: (
-      name-format: "{given} {family}",
-      format-quotes: it => it,
-      print-date-after-authors: true,
-      suppress-fields: (
-        "*": ("month", "day",),
-        "inproceedings": ("editor", "publisher", "pages", "location")
-      ),
-      eval-scope: ("todo": x => text(fill: red, x)),
-      bibstring: ("in": "In"),
-      bibstring-style: "long",
-    )
-  ), content)
+  #context {
+    let strings = lst-current-translations()
+    refsection(style: authoryear-style(
+      reference: (
+        name-format: "{given} {family}",
+        format-quotes: it => it,
+        print-date-after-authors: true,
+        suppress-fields: (
+          "*": ("month", "day",),
+          "inproceedings": ("editor", "publisher", "pages", "location")
+        ),
+        eval-scope: ("todo": x => text(fill: red, x)),
+        bibstring: ("in": strings.bib-in),
+        bibstring-style: "long",
+      )
+    ), content)
+  }
 ]
