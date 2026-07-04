@@ -4,14 +4,14 @@
 // #set text(lang: "de")
 
 #show: lst.with(
-  title: [Analysing Syntactic Long-term Alignment in Large Language Models],
-  author: [Florian Kandra],
-  matriculation-number: [12345],
+  title: "Analysing Syntactic Long-term Alignment in Large Language Models",
+  author: "Florian Kandra",
+  matriculation-number: "12345",
   supervisors: (
-    ([Supervisors], [Prof. Dr. Alexander Koller], [Prof. Dr. Vera Demberg]),
-    ([Additional advisor], [Dr. Michael Sullivan])
+    ("Supervisors", "Prof. Dr. Alexander Koller", "Prof. Dr. Vera Demberg"),
+    ("Additional advisor", "Dr. Michael Sullivan")
   ),
-  date: [31.12.2024],
+  date: "31.12.2024",
 
   abstract: [
     This thesis explores the effects of long-term syntactic alignment in Large Language Models

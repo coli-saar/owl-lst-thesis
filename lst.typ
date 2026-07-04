@@ -1,5 +1,9 @@
 #import "@preview/pergamon:0.8.0": *
 
+#let lst-template-version = "0.1.0"
+#let prepared-string = "Prepared with the saar-lst-thesis Typst template, version " + lst-template-version + "."
+
+
 #let uds-blue = rgb(0, 72, 119)
 #let text-gray = luma(95)
 
@@ -142,7 +146,7 @@
 
 
 
-// Main thesis wrapper. Use it through `#show: doc => lst(..., doc)` so the
+// Main thesis wrapper. Use it through `#show: lst.with(...)` so the
 // student's document body becomes `content` after the template has inserted the
 // title page, declaration, optional front matter, and table of contents.
 #let lst(thesis-type: none,
@@ -155,6 +159,16 @@
           abstract: none,
           acknowledgments: none,
           content) = [
+  #if title != none and author != none {
+    set document(title: title, author: author, description: prepared-string, keywords: (prepared-string,))
+  } else if title != none {
+    set document(title: title, description: prepared-string, keywords: (prepared-string,))
+  } else if author != none {
+    set document(author: author, description: prepared-string, keywords: (prepared-string,))
+  } else {
+    set document(description: prepared-string, keywords: (prepared-string,))
+  }
+
   #set page(
       paper: "a4", margin: ( bottom: 3cm, top: 3cm, inside: 3.5cm, outside: 2.5cm),
       numbering: none,
@@ -385,6 +399,9 @@
     line(length: 50%)
     v(-0.5em)
     [(#author)]
+
+    v(1fr)
+    text(size: 8pt, prepared-string)
   }
 
   // Optional front-matter sections are omitted entirely when the corresponding
