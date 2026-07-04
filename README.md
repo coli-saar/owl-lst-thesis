@@ -1,10 +1,14 @@
 # Typst style for LST theses
 
-This package provides a thesis style for the [Department of Language Science and Technology](https://www.lst.uni-saarland.de/)
+This is the official Typst thesis style
+for the [Department of Language Science and Technology](https://www.lst.uni-saarland.de/)
 at [Saarland University](https://www.uni-saarland.de/). 
-It sets up the title page, declaration, abstract, acknowledgments,
+You can use this for your Bachelor's or Master's Thesis or any other document you like.
+
+The template sets up the title page, declaration, abstract, acknowledgments,
 table of contents, chapter styling, headers, page numbers, figure captions, and bibliography
 formatting for an LST thesis.
+It is intended for double-sided printing and binding; the inner margin is wider than the outer one.
 
 
 ## Quick start in the Typst web app

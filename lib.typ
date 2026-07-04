@@ -27,7 +27,7 @@
     submission-date: "Submission Date",
     department: "Department of Language Science and Technology",
     university: "Saarland University",
-    thesis-type: "Bachelor Thesis",
+    thesis-type: "Master's Thesis",
     bib-in: "In",
   ),
   de: (
@@ -46,7 +46,7 @@
     submission-date: "Abgabedatum",
     department: "FR Sprachwissenschaft und Sprachtechnologie",
     university: "Universität des Saarlandes",
-    thesis-type: "Bachelorarbeit",
+    thesis-type: "Masterarbeit",
     bib-in: "In",
   ),
 )

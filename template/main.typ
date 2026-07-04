@@ -8,6 +8,7 @@
   title: "Thesis Title",
   author: "Your Name",
   matriculation-number: "Your Matriculation Number",
+  thesis-type: "Bachelor's Thesis",
   supervisors: (
     ("Supervisors", "First Supervisor", "Second Supervisor"),
     ("Additional advisor", "Additional Advisor"),

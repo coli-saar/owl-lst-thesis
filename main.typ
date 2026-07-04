@@ -6,6 +6,7 @@
 #show: lst.with(
   title: "Analysing Syntactic Long-term Alignment in Large Language Models",
   author: "Florian Kandra",
+  thesis-type: "Bachelor's Thesis",
   matriculation-number: "12345",
   supervisors: (
     ("Supervisors", "Prof. Dr. Alexander Koller", "Prof. Dr. Vera Demberg"),
