@@ -63,18 +63,18 @@ Start writing here. Cite papers with Pergamon like this #cite("bender-koller-202
 
 The main function is `lst`. Use it in a `#show` rule around your document content.
 
-- `title`: Thesis title shown on the title page and stored in the PDF metadata. Must be a string.
+- `title`: Thesis title shown on the title page and stored in the PDF metadata. Can be any content.
 - `author`: Your name, stored in the PDF metadata. Must be a string.
 - `matriculation-number`: Your matriculation number. Must be a string.
 - `supervisors`: A tuple of supervisor groups. Each group starts with a role label, followed by
   one or more names. Use strings for all labels and names.
 - `date`: Submission date printed on the title page and declaration. Must be a string.
-- `thesis-type`: Optional string. Defaults to `Bachelor Thesis` in English and `Bachelorarbeit`
-  in German.
+- `thesis-type`: Optional string. Defaults to `Bachelor's Thesis` in English and `Bachelorarbeit`
+  in German. You could e.g. pass `"Master's Thesis"` here.
 - `city`: Optional string. Defaults to `Saarbrücken` and is printed above the signature line in the
   declaration.
-- `abstract`: Optional. If present, the template creates an abstract page.
-- `acknowledgments`: Optional. If present, the template creates an acknowledgments page.
+- `abstract`: Optional content . If present, the template creates an abstract page.
+- `acknowledgments`: Optional content. If present, the template creates an acknowledgments page.
 
 The template automatically creates:
 
