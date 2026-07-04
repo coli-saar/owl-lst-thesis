@@ -200,7 +200,7 @@ To write a master's thesis or another thesis type, set `thesis-type`:
 
 ```typst
 #show: doc => lst(
-  thesis-type: "Master Thesis",
+  thesis-type: "Master's Thesis",
   title: "My Thesis Title",
   ...
   doc
@@ -220,7 +220,7 @@ rule:
 
 ## Licenses
 
-The Typst source files are released under MIT.
+The Typst source files are released under an MIT license.
 
 The [Open Sans](https://fonts.google.com/specimen/Open+Sans) font is Copyright 2020 by The
 Open Sans Project Authors and distributed under the
