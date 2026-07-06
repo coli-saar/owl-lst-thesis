@@ -210,7 +210,7 @@
   }
 
   #set page(
-      paper: "a4", margin: ( bottom: 3cm, top: 3cm, inside: 3.5cm, outside: 2.5cm),
+      paper: "a4", margin: ( bottom: 3cm, top: 3cm, inside: 3cm, outside: 2.5cm),
       numbering: none,
       number-align: center,
     )
@@ -234,10 +234,10 @@
       state("content.switch").update(true)
 
       v(2cm)
-      set text(font: ("Open Sans", "Libertinus Serif"), weight: "bold", size: 24pt, fill: uds-blue)
+      set text(font: ("Open Sans", "Libertinus Serif"), weight: "bold", size: 22pt, fill: uds-blue)
 
       if it.level == 1 and it.numbering != none {
-        text(font: "Open Sans", size: 11pt, fill: text-gray)[#lst-text("chapter") #context(counter(heading).display())]
+        text(font: "Open Sans", size: 10pt, fill: text-gray)[#lst-text("chapter") #context(counter(heading).display())]
         v(-0.6em)
         text(fill: uds-blue, it.body)
 
@@ -253,12 +253,12 @@
     } else if it.level == 2 {
       // Sections
       v(paragraph-space)
-      text(font: "Open Sans", size: 16pt, weight: "bold", it)
+      text(font: "Open Sans", size: 15pt, weight: "bold", it)
       v(1.5em, weak: true)
     } else if it.level == 3 {
       // Subsections
       v(0.3em)
-      text(font: "Open Sans", size: 13.5pt, weight: "bold", it)
+      text(font: "Open Sans", size: 12.5pt, weight: "bold", it)
       v(1em, weak: true)
     } else if it.level == 4 {
       // v(0.7em)
@@ -283,7 +283,7 @@
   #show figure: set place(clearance: 2em)
 
   #show figure.caption: it => {
-    set text(font: "Open Sans", size: 9.5pt)
+    set text(font: "Open Sans", size: 9pt)
     v(0.5em)
     text(fill: uds-blue, weight: "semibold", it.supplement)
     h(0.35em)
@@ -310,7 +310,7 @@
       let page-here = here().page()
       align(
         if calc.odd(page-here) { right } else { left },
-        text(font: "Open Sans", size: 9.5pt, fill: uds-blue, weight: "semibold", counter(page).display())
+        text(font: "Open Sans", size: 9pt, fill: uds-blue, weight: "semibold", counter(page).display())
       )
     } else {
       [  ] // empty page
@@ -403,7 +403,7 @@
       }
 
       align(if calc.odd(page-here) { right } else { left },
-        text(font: "Open Sans", size: 9.5pt)[
+        text(font: "Open Sans", size: 9pt)[
           #header-content
         ])
     }
@@ -482,7 +482,7 @@
 
   // The table of contents is intentionally shallow: chapters and sections only.
   #show outline.entry.where(level: 1): it => {
-    v(12pt, weak: true)
+    v(11pt, weak: true)
     it
   }
 
