@@ -1,6 +1,6 @@
 # Typst style for LST theses
 
-This is the official Typst thesis style
+This is a Typst thesis style
 for the [Department of Language Science and Technology](https://www.lst.uni-saarland.de/)
 at [Saarland University](https://www.uni-saarland.de/). 
 You can use this for your Bachelor's or Master's Thesis or any other document you like.
@@ -35,6 +35,7 @@ This is the smallest useful shape of a thesis file:
   title: "My Thesis Title",
   author: "Jane Student",
   matriculation-number: "1234567",
+  degree-program: "coli",
   supervisors: (
     ("Supervisors", "Prof. Dr. First Supervisor", "Prof. Dr. Second Supervisor"),
     ("Additional advisor", "Dr. Helpful Advisor"),
@@ -66,15 +67,32 @@ The main function is `lst`. Use it in a `#show` rule around your document conten
 - `title`: Thesis title shown on the title page and stored in the PDF metadata. Can be any content.
 - `author`: Your name, stored in the PDF metadata. Must be a string.
 - `matriculation-number`: Your matriculation number. Must be a string.
+- `degree-program`: Required degree program printed on the title page. Use one of the built-in
+  abbreviations below, or pass free-form text for custom cases together with `thesis-type`.
 - `supervisors`: A tuple of supervisor groups. Each group starts with a role label, followed by
   one or more names. Use strings for all labels and names.
 - `date`: Submission date printed on the title page and declaration. Must be a string.
-- `thesis-type`: Optional string. Defaults to `Bachelor's Thesis` in English and `Bachelorarbeit`
-  in German. You could e.g. pass `"Master's Thesis"` here.
+- `thesis-type`: Optional string. By default, the template chooses the localized bachelor's or
+  master's thesis label from a built-in degree program. Set this by hand for custom cases such as
+  `"Seminar paper"`; this manual value is not localized.
 - `city`: Optional string. Defaults to `Saarbrücken` and is printed above the signature line in the
   declaration.
 - `abstract`: Optional content . If present, the template creates an abstract page.
 - `acknowledgments`: Optional content. If present, the template creates an acknowledgments page.
+
+Built-in degree programs:
+
+| Abbreviation | Degree program | English thesis type | German thesis type |
+| --- | --- | --- | --- |
+| `"langsci"` | `BA Language Science` | `Bachelor's Thesis` | `Bachelorarbeit` |
+| `"coli"` | `BSc Computerlinguistik` | `Bachelor's Thesis` | `Bachelorarbeit` |
+| `"lst"` | `MSc Language Science and Technology` | `Master's Thesis` | `Masterarbeit` |
+| `"lct"` | `MSc Language and Communication Technologies` | `Master's Thesis` | `Masterarbeit` |
+| `"tst"` | `MA Translation Science and Technology` | `Master's Thesis` | `Masterarbeit` |
+
+For these built-in abbreviations, the degree program name is printed exactly as shown above. The
+thesis type is selected from the document language: `#set text(lang: "en")` prints the English
+label, and `#set text(lang: "de")` prints the German label.
 
 The template automatically creates:
 
@@ -196,16 +214,45 @@ In the Typst web app, Libertinus Serif and Open Sans should be available without
 
 ## Common changes
 
-To write a master's thesis or another thesis type, set `thesis-type`:
+To select another degree program, set `degree-program`:
 
 ```typst
 #show: doc => lst(
-  thesis-type: "Master's Thesis",
+  degree-program: "lst",
   title: "My Thesis Title",
   ...
   doc
 )
 ```
+
+To override the thesis type that is chosen from the degree program, set `thesis-type`:
+
+```typst
+#show: doc => lst(
+  degree-program: "langsci",
+  thesis-type: "Seminar paper",
+  title: "My Seminar Paper",
+  ...
+  doc
+)
+```
+
+Free-form degree programs are also possible, but then `thesis-type` is required:
+
+```typst
+#show: doc => lst(
+  degree-program: "Certificate Program in Example Studies",
+  thesis-type: "Project report",
+  title: "My Report",
+  ...
+  doc
+)
+```
+
+If `degree-program` is omitted, the template stops with an error message. If `degree-program` is
+free-form and `thesis-type` is omitted, it also stops with an error message. In these free-form
+cases, neither the degree program nor the manually supplied thesis type is localized by the
+template.
 
 To omit acknowledgments, remove the `acknowledgments` argument. To omit the abstract, remove
 the `abstract` argument.

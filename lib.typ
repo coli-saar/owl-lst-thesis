@@ -27,7 +27,6 @@
     submission-date: "Submission Date",
     department: "Department of Language Science and Technology",
     university: "Saarland University",
-    thesis-type: "Master's Thesis",
     bib-in: "In",
   ),
   de: (
@@ -46,7 +45,6 @@
     submission-date: "Abgabedatum",
     department: "FR Sprachwissenschaft und Sprachtechnologie",
     university: "Universität des Saarlandes",
-    thesis-type: "Masterarbeit",
     bib-in: "In",
   ),
 )
@@ -57,6 +55,53 @@
     lst-translations.at(lang)
   } else {
     lst-translations.en
+  }
+}
+
+#let degree-programs = (
+  langsci: (
+    name: "BA Language Science",
+    thesis-type: (
+      en: "Bachelor's Thesis",
+      de: "Bachelorarbeit",
+    ),
+  ),
+  coli: (
+    name: "BSc Computerlinguistik",
+    thesis-type: (
+      en: "Bachelor's Thesis",
+      de: "Bachelorarbeit",
+    ),
+  ),
+  lst: (
+    name: "MSc Language Science and Technology",
+    thesis-type: (
+      en: "Master's Thesis",
+      de: "Masterarbeit",
+    ),
+  ),
+  lct: (
+    name: "MSc Language and Communication Technologies",
+    thesis-type: (
+      en: "Master's Thesis",
+      de: "Masterarbeit",
+    ),
+  ),
+  tst: (
+    name: "MA Translation Science and Technology",
+    thesis-type: (
+      en: "Master's Thesis",
+      de: "Masterarbeit",
+    ),
+  ),
+)
+
+#let localized-thesis-type(thesis-type) = {
+  let lang = text.lang
+  if thesis-type.keys().contains(lang) {
+    thesis-type.at(lang)
+  } else {
+    thesis-type.en
   }
 }
 
@@ -97,20 +142,14 @@
 // The title page is separated from `lst` so the main wrapper can focus on page
 // setup and document flow. Localized strings are passed in explicitly because
 // the title page is built inside a context block.
-#let title-page(strings, thesis-type, title, author, matriculation-number, supervisors, date) = {
+#let title-page(strings, thesis-type, degree-program, title, author, matriculation-number, supervisors, date) = {
   set text(font: "Open Sans")
-
-  let displayed-thesis-type = if thesis-type == none {
-    strings.thesis-type
-  } else {
-    thesis-type
-  }
 
   stack(dir: ltr,
     box(
       text(size: 12pt, fill: uds-blue)[
-        *#displayed-thesis-type*\
-        #strings.department\
+        *#thesis-type*\
+        #degree-program\
         #strings.university
       ]
     ),
@@ -150,6 +189,7 @@
 // student's document body becomes `content` after the template has inserted the
 // title page, declaration, optional front matter, and table of contents.
 #let lst(thesis-type: none,
+          degree-program: none,
           title: none,
           author: none,
           matriculation-number: none,
@@ -175,7 +215,7 @@
       number-align: center,
     )
 
-  #set text(size: 12pt)
+  #set text(size: 11pt)
   #let leading-space = 0.7em
   #let paragraph-space = 2 * leading-space
   #set par(leading: leading-space, spacing: paragraph-space)
@@ -379,9 +419,29 @@
   // unnumbered title page, then restarts in arabic numerals for the thesis body.
   #context {
     let strings = lst-current-translations()
+    if degree-program == none {
+      panic("Missing degree program. Set `degree-program` to one of \"langsci\", \"coli\", \"lst\", \"lct\", or \"tst\", or pass a free-form degree-program together with `thesis-type`.")
+    }
+
+    let is-known-degree-program = type(degree-program) == str and degree-programs.keys().contains(degree-program)
+    let resolved-degree-program = if is-known-degree-program {
+      degree-programs.at(degree-program)
+    } else {
+      (name: degree-program, thesis-type: none)
+    }
+
+    if not is-known-degree-program and thesis-type == none {
+      panic("Free-form degree programs need an explicit `thesis-type`, for example `thesis-type: \"Seminar paper\"`.")
+    }
+
+    let displayed-thesis-type = if thesis-type != none {
+      thesis-type
+    } else {
+      localized-thesis-type(resolved-degree-program.thesis-type)
+    }
 
     // title page
-    title-page(strings, thesis-type, title, author, matriculation-number, supervisors, date)
+    title-page(strings, displayed-thesis-type, resolved-degree-program.name, title, author, matriculation-number, supervisors, date)
 
     // declaration page
     set page(numbering: "i")
