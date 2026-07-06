@@ -3,6 +3,7 @@
 #let lst-template-version = "0.1.0"
 #let prepared-string = "Prepared with the saar-lst-thesis Typst template, version " + lst-template-version + "."
 
+#let titlepage-bottom-fontsize = 10pt
 
 #let uds-blue = rgb(0, 72, 119)
 #let text-gray = luma(95)
@@ -122,6 +123,7 @@
 // Render grouped supervisor/advisor entries. Each group is expected to have the
 // role label first and one or more names afterwards.
 #let advisors(supervisors) = {
+  set text(size: titlepage-bottom-fontsize)
   for (j, sup) in supervisors.enumerate() {
     let role = sup.at(0)
     let names = sup.slice(1)
@@ -174,6 +176,7 @@
   advisors(supervisors)
 
   place(bottom + right)[
+    #set text(size: titlepage-bottom-fontsize)
     *#strings.matriculation-number*\
     #matriculation-number\
     \
@@ -234,10 +237,10 @@
       state("content.switch").update(true)
 
       v(2cm)
-      set text(font: ("Open Sans", "Libertinus Serif"), weight: "bold", size: 22pt, fill: uds-blue)
+      set text(font: ("Open Sans", "Libertinus Serif"), weight: "bold", size: 24pt, fill: uds-blue)
 
       if it.level == 1 and it.numbering != none {
-        text(font: "Open Sans", size: 10pt, fill: text-gray)[#lst-text("chapter") #context(counter(heading).display())]
+        text(font: "Open Sans", size: 12pt, fill: text-gray)[#lst-text("chapter") #context(counter(heading).display())]
         v(-0.6em)
         text(fill: uds-blue, it.body)
 
@@ -446,7 +449,7 @@
     // declaration page
     set page(numbering: "i")
     counter(page).update(0)
-    heading(level: 100)[#strings.declaration]
+    heading(level: 100, strings.declaration)
     v(-2em)
     strings.declaration-text
     v(2em)

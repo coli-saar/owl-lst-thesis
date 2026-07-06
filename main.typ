@@ -385,6 +385,8 @@ This pattern suggests that syntactic information is retained as part of the rece
 state. It is not merely a token-local continuation effect. At the same time, the decay indicates
 that syntax competes with newer content and instructions.
 
+#lorem(150)
+
 #figure(caption: [Schematic decay of alignment over intervening turns.])[
   #sample-figure(
     [0 turns: strong | 1 turn: moderate | 3 turns: weak],
@@ -404,12 +406,15 @@ that syntax competes with newer content and instructions.
   )
 ] <tab:effects>
 
-== Conclusion
+
+= Conclusion
 
 This thesis has examined syntactic long-term alignment in large language models. The results
 show that prior syntactic context can influence later model output, especially for passive voice
 and relative clauses. The effect is moderate, construction-dependent, and sensitive to the
 distance between context and probe.
+
+
 
 The broader conclusion is that prompt form matters. Language models respond not only to the
 meaning of a prompt but also to its linguistic shape. For evaluation, this means that benchmark
