@@ -10,7 +10,7 @@
   matriculation-number: "12345",
   supervisors: (
     ("Supervisors", "Prof. Dr. Alexander Koller", "Prof. Dr. Vera Demberg"),
-    ("Additional advisor", "Dr. Michael Sullivan")
+    // ("Additional advisor", "Dr. Michael Sullivan")
   ),
   date: "31.12.2024",
   // mode: "print",

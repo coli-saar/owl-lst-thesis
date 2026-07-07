@@ -181,7 +181,7 @@
 
     stack(dir: ltr,
       move(dy: -0.08cm, image(mode-settings.lst_logo, width: 1.9cm)),
-      h(0.35cm),
+      h(0.6cm),
       image(mode-settings.uds_logo, width: 1.6cm)
     )
   )
