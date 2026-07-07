@@ -1,55 +1,32 @@
 # Logo assets
 
-This directory keeps separate logo assets for screen and print output.
+The template uses the RGB logo assets in `logos/rgb/` for both `mode: "screen"`
+and `mode: "print"`:
 
-## Screen mode
+- `logos/rgb/lst-logo.svg`
+- `logos/rgb/uds-logo.svg`
 
-Use `logos/screen/` for the default template mode:
-
-- `logos/screen/lst-logo.svg`
-- `logos/screen/uds-logo.svg`
-
-These SVGs use the UdS style-guide screen color:
+Both SVGs use the UdS style-guide screen color:
 
 - RGB: `rgb(0, 72, 118)`
 - Hex: `#004876`
 
-This is the right choice for PDF previews, the Typst web app, browsers, slides,
-and ordinary digital sharing.
+Using one RGB color model for both the live Typst text and the embedded logo
+assets avoids object-specific color handling in ordinary PDF viewers and office
+printer drivers. The `print` mode still changes the page margins for binding,
+but it does not switch to CMYK logo files.
 
-## Print mode
+## CMYK References
 
-Use `logos/print/` for `mode: "print"`:
+`logos/cmyk/` contains CMYK PDF versions of the logos:
 
-- `logos/print/lst-logo.pdf`
-- `logos/print/uds-logo.pdf`
+- `logos/cmyk/lst-logo.pdf`
+- `logos/cmyk/uds-logo.pdf`
 
-These PDFs are vector assets using the UdS print color:
+These are retained as reference assets for possible professional-print workflows.
+They are not used by the Typst template by default.
 
-- CMYK: `100 / 40 / 0 / 50`
-- PDF paint operator: `1 0.399902 0 0.5 k`
-
-This avoids relying on viewer-specific RGB-to-CMYK conversion for print output.
-
-## Raw sources
+## Raw Sources
 
 `logos/raw/` contains source and intermediate files used to derive the packaged
 assets. The Typst template does not import files from `logos/raw/` directly.
-
-The root-level `lst-logo.svg`, `uds-logo.svg`, and `uds-logo.pdf` are retained as
-working/source derivatives. The packaged mode-specific assets are the files in
-`logos/screen/` and `logos/print/`.
-
-## Template selection
-
-The template chooses assets through the `mode` argument:
-
-```typst
-#show: lst.with(
-  mode: "screen", // default, RGB/SVG assets
-  // mode: "print", // CMYK/PDF assets
-)
-```
-
-Screen mode uses RGB colors and SVG logos. Print mode uses CMYK colors and PDF
-logos.

@@ -6,7 +6,6 @@
 #let titlepage-bottom-fontsize = 10pt
 
 #let uds-blue-screen = rgb(0, 72, 118)
-#let uds-blue-print = cmyk(100%, 40%, 0%, 50%)
 #let uds-blue = uds-blue-screen
 #let text-gray = luma(95)
 
@@ -14,15 +13,15 @@
   if mode == "screen" {
     (
       blue: uds-blue-screen,
-      lst_logo: "logos/screen/lst-logo.svg",
-      uds_logo: "logos/screen/uds-logo.svg",
+      lst_logo: "logos/rgb/lst-logo.svg",
+      uds_logo: "logos/rgb/uds-logo.svg",
       page_margin: (bottom: 3cm, top: 3cm, inside: 2.75cm, outside: 2.75cm),
     )
   } else if mode == "print" {
     (
-      blue: uds-blue-print,
-      lst_logo: "logos/print/lst-logo.pdf",
-      uds_logo: "logos/print/uds-logo.pdf",
+      blue: uds-blue-screen,
+      lst_logo: "logos/rgb/lst-logo.svg",
+      uds_logo: "logos/rgb/uds-logo.svg",
       page_margin: (bottom: 3cm, top: 3cm, inside: 3cm, outside: 2.5cm),
     )
   } else {
