@@ -151,7 +151,7 @@ Use labels for cross-references:
 ```typst
 = Introduction <sec:introduction>
 
-As discussed in @sec:introduction, ...
+As discussed in @sec:introduction, this chapter introduces the topic.
 ```
 
 Use figures and tables with labels:
@@ -214,7 +214,7 @@ To select another degree program, set `degree-program`:
 #show: lst.with(
   degree-program: "lst",
   title: "My Thesis Title",
-  ...
+  // add the remaining arguments as in the minimal example
 )
 ```
 
@@ -225,7 +225,7 @@ To override the thesis type that is chosen from the degree program, set `thesis-
   degree-program: "langsci",
   thesis-type: "Seminar paper",
   title: "My Seminar Paper",
-  ...
+  // add the remaining arguments as in the minimal example
 )
 ```
 
@@ -236,7 +236,7 @@ Free-form degree programs are also possible, but then `thesis-type` is required:
   degree-program: "Certificate Program in Example Studies",
   thesis-type: "Project report",
   title: "My Report",
-  ...
+  // add the remaining arguments as in the minimal example
 )
 ```
 
