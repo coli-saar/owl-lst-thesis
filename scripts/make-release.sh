@@ -55,14 +55,14 @@ if [[ "$UPDATE_SOURCES" == "--update-sources" ]]; then
 fi
 
 rm -rf "$RELEASE_DIR"
-mkdir -p "$RELEASE_DIR/logos" "$RELEASE_DIR/template"
+mkdir -p "$RELEASE_DIR/logos/rgb" "$RELEASE_DIR/template"
 
 cp lib.typ "$RELEASE_DIR/lib.typ"
 cp README.md "$RELEASE_DIR/README.md"
 cp LICENSE "$RELEASE_DIR/LICENSE"
 cp thumbnail.png "$RELEASE_DIR/thumbnail.png"
-cp logos/lst-logo.pdf "$RELEASE_DIR/logos/lst-logo.pdf"
-cp logos/uds-logo.svg "$RELEASE_DIR/logos/uds-logo.svg"
+cp logos/rgb/lst-logo.svg "$RELEASE_DIR/logos/rgb/lst-logo.svg"
+cp logos/rgb/uds-logo.svg "$RELEASE_DIR/logos/rgb/uds-logo.svg"
 cp template/main.typ "$RELEASE_DIR/template/main.typ"
 cp template/custom.bib "$RELEASE_DIR/template/custom.bib"
 

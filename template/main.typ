@@ -8,12 +8,18 @@
   title: "Thesis Title",
   author: "Your Name",
   matriculation-number: "Your Matriculation Number",
+
   degree-program: "coli",
+  // one of "coli", "lst", "lct", "langsci", "tst"
+
   supervisors: (
     ("Supervisors", "First Supervisor", "Second Supervisor"),
     ("Additional advisor", "Additional Advisor"),
   ),
+
   date: "Submission Date",
+
+  // mode: "print", // uncomment to obtain printing-friendly page margins
 
   abstract: [
     Write your abstract here.
