@@ -1,4 +1,4 @@
-#import "@preview/saar-lst-thesis:0.1.0": *
+#import "@preview/owl-lst-thesis:0.1.0": *
 #import "@preview/pergamon:0.8.0": *
 
 // Use "de" for German template labels.

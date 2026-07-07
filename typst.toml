@@ -1,5 +1,5 @@
 [package]
-name = "saar-lst-thesis"
+name = "owl-lst-thesis"
 version = "0.1.0"
 entrypoint = "lib.typ"
 authors = ["Alexander Koller <koller@lst.uni-saarland.de>"]

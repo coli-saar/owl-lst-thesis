@@ -15,7 +15,7 @@ double-sided printing and binding, with a wider inner margin.
 ## Quick start in the Typst web app
 
 1. Open the Typst web app.
-2. Create a new project from the `saar-lst-thesis` template.
+2. Create a new project from the `owl-lst-thesis` template.
 3. Edit the metadata in the `#show` block.
 4. Add BibTeX entries and import your BibTeX file with `add-bib-resource`.
 
@@ -27,7 +27,7 @@ You can write the thesis below the `#show: lst` block and export the PDF from th
 This is the smallest useful shape of a thesis file:
 
 ```typst
-#import "@preview/saar-lst-thesis:0.1.0": *
+#import "@preview/owl-lst-thesis:0.1.0": *
 #import "@preview/pergamon:0.8.0": *
 
 #set text(lang: "en")

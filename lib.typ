@@ -1,7 +1,7 @@
 #import "@preview/pergamon:0.8.0": *
 
 #let lst-template-version = "0.1.0"
-#let prepared-string = "Prepared with the saar-lst-thesis Typst template, version " + lst-template-version + "."
+#let prepared-string = "Prepared with the owl-lst-thesis Typst template, version " + lst-template-version + "."
 
 #let titlepage-bottom-fontsize = 10pt
 
