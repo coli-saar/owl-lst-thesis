@@ -13,6 +13,7 @@
     ("Additional advisor", "Dr. Michael Sullivan")
   ),
   date: "31.12.2024",
+  // mode: "print",
 
   abstract: [
     This thesis explores the effects of long-term syntactic alignment in Large Language Models

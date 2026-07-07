@@ -5,8 +5,28 @@
 
 #let titlepage-bottom-fontsize = 10pt
 
-#let uds-blue = rgb(0, 72, 119)
+#let uds-blue-screen = rgb(0, 72, 118)
+#let uds-blue-print = cmyk(100%, 40%, 0%, 50%)
+#let uds-blue = uds-blue-screen
 #let text-gray = luma(95)
+
+#let lst-mode-settings(mode) = {
+  if mode == "screen" {
+    (
+      blue: uds-blue-screen,
+      lst_logo: "logos/screen/lst-logo.svg",
+      uds_logo: "logos/screen/uds-logo.svg",
+    )
+  } else if mode == "print" {
+    (
+      blue: uds-blue-print,
+      lst_logo: "logos/print/lst-logo.pdf",
+      uds_logo: "logos/print/uds-logo.pdf",
+    )
+  } else {
+    panic("unknown LST template mode: " + repr(mode))
+  }
+}
 
 // Built-in strings for the parts of the thesis that the template creates.
 // The selected language comes from `#set text(lang: "...")`; unsupported
@@ -144,12 +164,12 @@
 // The title page is separated from `lst` so the main wrapper can focus on page
 // setup and document flow. Localized strings are passed in explicitly because
 // the title page is built inside a context block.
-#let title-page(strings, thesis-type, degree-program, title, author, matriculation-number, supervisors, date) = {
+#let title-page(mode-settings, strings, thesis-type, degree-program, title, author, matriculation-number, supervisors, date) = {
   set text(font: "Open Sans")
 
   stack(dir: ltr,
     box(
-      text(size: 12pt, fill: uds-blue)[
+      text(size: 12pt, fill: mode-settings.blue)[
         *#thesis-type*\
         #degree-program\
         #strings.university
@@ -158,9 +178,9 @@
     h(1fr),
 
     stack(dir: ltr,
-      image("logos/lst-logo.pdf", width: 1.45cm),
-      h(0.6cm),
-      move(dy: -0.08cm, image("logos/uds-logo.svg", width: 1.6cm))
+      image(mode-settings.lst_logo, width: 1.9cm),
+      h(0.35cm),
+      move(dy: -0.08cm, image(mode-settings.uds_logo, width: 1.6cm))
     )
   )
 
@@ -168,7 +188,7 @@
 
   text(size: 18pt, author)
   v(0em)
-  text(size: 24pt, weight: "bold", fill: uds-blue, title)
+  text(size: 24pt, weight: "bold", fill: mode-settings.blue, title)
 
   v(1fr)
 
@@ -199,9 +219,13 @@
           supervisors: none,
           date: none,
           city: "Saarbrücken",
+          mode: "screen",
           abstract: none,
           acknowledgments: none,
           content) = [
+  #let mode-settings = lst-mode-settings(mode)
+  #let uds-blue = mode-settings.blue
+
   #if title != none and author != none {
     set document(title: title, author: author, description: prepared-string, keywords: (prepared-string,))
   } else if title != none {
@@ -444,7 +468,7 @@
     }
 
     // title page
-    title-page(strings, displayed-thesis-type, resolved-degree-program.name, title, author, matriculation-number, supervisors, date)
+    title-page(mode-settings, strings, displayed-thesis-type, resolved-degree-program.name, title, author, matriculation-number, supervisors, date)
 
     // declaration page
     set page(numbering: "i")

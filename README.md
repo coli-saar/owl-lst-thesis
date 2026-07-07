@@ -77,6 +77,8 @@ The main function is `lst`. Use it in a `#show` rule around your document conten
   `"Seminar paper"`; this manual value is not localized.
 - `city`: Optional string. Defaults to `Saarbrücken` and is printed above the signature line in the
   declaration.
+- `mode`: Optional string. Defaults to `"screen"`, which uses RGB colors and SVG logos. Use
+  `"print"` for CMYK colors and PDF logos.
 - `abstract`: Optional content . If present, the template creates an abstract page.
 - `acknowledgments`: Optional content. If present, the template creates an acknowledgments page.
 
