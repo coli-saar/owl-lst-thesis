@@ -2,7 +2,7 @@
 
 This is a Typst thesis style
 for the [Department of Language Science and Technology](https://www.lst.uni-saarland.de/)
-at [Saarland University](https://www.uni-saarland.de/). 
+at [Saarland University](https://www.uni-saarland.de/).
 You can use this for your Bachelor's or Master's Thesis or any other document you like.
 
 The template sets up the title page, declaration, abstract, acknowledgments,
@@ -81,7 +81,7 @@ The main function is `lst`. Use it in a `#show` rule around your document conten
 - `mode`: Optional string. Defaults to `"screen"`, which uses RGB colors, SVG logos, and equal
   left/right margins. Use `"print"` for the same RGB colors and logos with a wider inner margin
   for binding.
-- `abstract`: Optional content . If present, the template creates an abstract page.
+- `abstract`: Optional content. If present, the template creates an abstract page.
 - `acknowledgments`: Optional content. If present, the template creates an acknowledgments page.
 
 Built-in degree programs:
@@ -213,7 +213,7 @@ heading and then asks Pergamon to print the bibliography.
 The template uses Libertinus Serif for the main text and Open Sans for headings, captions, headers, and title-page elements. Install
 [Open Sans](https://fonts.google.com/specimen/Open+Sans) locally when compiling offline.
 
-In the Typst web app, Libertinus Serif and Open Sans should be available without extra setup. 
+In the Typst web app, Libertinus Serif and Open Sans should be available without extra setup.
 
 
 ## Common changes
@@ -271,11 +271,11 @@ rule:
 
 ## Licenses
 
-The Typst source files are released under an MIT license.
+The Typst source files are released under an MIT-0 license.
 
 The [Open Sans](https://fonts.google.com/specimen/Open+Sans) font is Copyright 2020 by The
 Open Sans Project Authors and distributed under the
 [SIL Open Font License 11](https://fonts.google.com/specimen/Open+Sans/license).
 
-The Saarland University and LST logos in `logos/` are trademarks of their respective owners
-and are not covered by the package license.
+The Saarland University and LST logos in `logos/` are trademarks of their respective owners,
+used with permission, and are not covered by the package license.
