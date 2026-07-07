@@ -4,6 +4,7 @@ This is a Typst thesis style
 for the [Department of Language Science and Technology](https://www.lst.uni-saarland.de/)
 at [Saarland University](https://www.uni-saarland.de/).
 You can use this for your Bachelor's or Master's Thesis or any other document you like.
+The template is maintained by [Alexander Koller](https://www.coli.uni-saarland.de/~koller/).
 
 The template sets up the title page, declaration, abstract, acknowledgments,
 table of contents, chapter styling, headers, page numbers, figure captions, and bibliography
@@ -78,9 +79,7 @@ The main function is `lst`. Use it in a `#show` rule around your document conten
   `"Seminar paper"`; this manual value is not localized.
 - `city`: Optional string. Defaults to `Saarbrücken` and is printed above the signature line in the
   declaration.
-- `mode`: Optional string. Defaults to `"screen"`, which uses RGB colors, SVG logos, and equal
-  left/right margins. Use `"print"` for the same RGB colors and logos with a wider inner margin
-  for binding.
+- `mode`: Optional string. Defaults to `"screen"`, which makes the left and right margin equal size. Use `"print"` for a wider inner margin for binding.
 - `abstract`: Optional content. If present, the template creates an abstract page.
 - `acknowledgments`: Optional content. If present, the template creates an acknowledgments page.
 
@@ -180,18 +179,9 @@ three pieces in your thesis file:
 #print-lst-bibliography()
 ```
 
-Add references to `custom.bib` in normal BibTeX format:
+Add references to `custom.bib` in normal BibTeX format. Of course you can also use Bibtex files with different names.
 
-```bibtex
-@inproceedings{bender-koller-2020-climbing,
-  title = {Climbing towards NLU},
-  author = {Bender, Emily M. and Koller, Alexander},
-  year = {2020},
-  booktitle = {Proceedings of ACL},
-}
-```
-
-Cite a source in parentheses with `#cite` and as a noun phrase as `#citet`.
+Cite a source in parentheses with `#cite` and as a noun phrase with `#citet`.
 Pass the BibTeX key as a string (not as a label like in the default Typst `cite` command):
 
 ```typst
@@ -216,40 +206,37 @@ The template uses Libertinus Serif for the main text and Open Sans for headings,
 In the Typst web app, Libertinus Serif and Open Sans should be available without extra setup.
 
 
-## Common changes
+## Common metadata patterns
 
 To select another degree program, set `degree-program`:
 
 ```typst
-#show: doc => lst(
+#show: lst.with(
   degree-program: "lst",
   title: "My Thesis Title",
   ...
-  doc
 )
 ```
 
 To override the thesis type that is chosen from the degree program, set `thesis-type`:
 
 ```typst
-#show: doc => lst(
+#show: lst.with(
   degree-program: "langsci",
   thesis-type: "Seminar paper",
   title: "My Seminar Paper",
   ...
-  doc
 )
 ```
 
 Free-form degree programs are also possible, but then `thesis-type` is required:
 
 ```typst
-#show: doc => lst(
+#show: lst.with(
   degree-program: "Certificate Program in Example Studies",
   thesis-type: "Project report",
   title: "My Report",
   ...
-  doc
 )
 ```
 
