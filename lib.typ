@@ -16,12 +16,14 @@
       blue: uds-blue-screen,
       lst_logo: "logos/screen/lst-logo.svg",
       uds_logo: "logos/screen/uds-logo.svg",
+      page_margin: (bottom: 3cm, top: 3cm, inside: 2.75cm, outside: 2.75cm),
     )
   } else if mode == "print" {
     (
       blue: uds-blue-print,
       lst_logo: "logos/print/lst-logo.pdf",
       uds_logo: "logos/print/uds-logo.pdf",
+      page_margin: (bottom: 3cm, top: 3cm, inside: 3cm, outside: 2.5cm),
     )
   } else {
     panic("unknown LST template mode: " + repr(mode))
@@ -178,9 +180,9 @@
     h(1fr),
 
     stack(dir: ltr,
-      image(mode-settings.lst_logo, width: 1.9cm),
+      move(dy: -0.08cm, image(mode-settings.lst_logo, width: 1.9cm)),
       h(0.35cm),
-      move(dy: -0.08cm, image(mode-settings.uds_logo, width: 1.6cm))
+      image(mode-settings.uds_logo, width: 1.6cm)
     )
   )
 
@@ -237,7 +239,7 @@
   }
 
   #set page(
-      paper: "a4", margin: ( bottom: 3cm, top: 3cm, inside: 3cm, outside: 2.5cm),
+      paper: "a4", margin: mode-settings.page_margin,
       numbering: none,
       number-align: center,
     )

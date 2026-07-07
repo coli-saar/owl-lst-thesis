@@ -8,7 +8,8 @@ You can use this for your Bachelor's or Master's Thesis or any other document yo
 The template sets up the title page, declaration, abstract, acknowledgments,
 table of contents, chapter styling, headers, page numbers, figure captions, and bibliography
 formatting for an LST thesis.
-It is intended for double-sided printing and binding; the inner margin is wider than the outer one.
+The default `screen` mode uses equal left and right margins. The `print` mode is intended for
+double-sided printing and binding, with a wider inner margin.
 
 
 ## Quick start in the Typst web app
@@ -78,7 +79,7 @@ The main function is `lst`. Use it in a `#show` rule around your document conten
 - `city`: Optional string. Defaults to `Saarbrücken` and is printed above the signature line in the
   declaration.
 - `mode`: Optional string. Defaults to `"screen"`, which uses RGB colors and SVG logos. Use
-  `"print"` for CMYK colors and PDF logos.
+  `"print"` for CMYK colors, PDF logos, and a wider inner margin for binding.
 - `abstract`: Optional content . If present, the template creates an abstract page.
 - `acknowledgments`: Optional content. If present, the template creates an acknowledgments page.
 
