@@ -470,27 +470,27 @@
 
     // title page
     title-page(mode-settings, strings, displayed-thesis-type, resolved-degree-program.name, title, author, matriculation-number, supervisors, date)
-
-    // declaration page
-    set page(numbering: "i")
-    counter(page).update(0)
-    heading(level: 100, strings.declaration)
-    v(-2em)
-    strings.declaration-text
-    v(2em)
-
-    city
-    [, ]
-    date
-
-    v(5em)
-    line(length: 50%)
-    v(-0.5em)
-    [(#author)]
-
-    v(1fr)
-    text(size: 8pt, prepared-string)
   }
+
+  // declaration page
+  #set page(numbering: "i")
+  #counter(page).update(0)
+  #heading(level: 100, lst-text("declaration"))
+  #v(-2em)
+  #lst-text("declaration-text")
+  #v(2em)
+
+  #city
+  ,
+  #date
+
+  #v(5em)
+  #line(length: 50%)
+  #v(-0.5em)
+  (#author)
+
+  #v(1fr)
+  #text(size: 8pt, prepared-string)
 
   // Optional front-matter sections are omitted entirely when the corresponding
   // argument is `none`.
